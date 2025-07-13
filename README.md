@@ -1,100 +1,184 @@
-# Virtual Memory Paging Simulator
+🧠 Virtual Memory Paging Simulator
+==================================
 
-This project simulates **virtual memory paging** with multiple page replacement algorithms and provides **visual and interactive** insights into how memory accesses are managed at the OS level.
+This project simulates **virtual memory paging** with multiple **page replacement algorithms** and provides **visual and interactive insights** into how memory accesses are managed at the operating system level.
 
-## 🧠 Features
+🚀 Features
+-----------
 
-- Simulates various page replacement algorithms:
-  - FIFO (First-In-First-Out)
-  - LRU (Least Recently Used)
-  - MIN (Optimal)
-  - CLOCK
-  - Second Chance
-- Captures **live memory access traces** from the Linux `/proc` filesystem.
-- Provides:
-  - **Graphical visualization** using Gnuplot.
-  - **Interactive animation** using SDL2.
-- Tracks detailed statistics:
-  - Hits
-  - Misses
-  - Page faults
-  - Hit and miss ratios
+### 🔁 Page Replacement Algorithms
 
-## 📦 Dependencies
+*   FIFO (First-In-First-Out)
+    
+*   LRU (Least Recently Used)
+    
+*   MIN (Optimal)
+    
+*   CLOCK
+    
+*   Second Chance
+    
 
-Install the following packages (on Debian/Ubuntu-based systems):
+### 📥 Memory Trace Collection
 
-```bash
-sudo apt update
-sudo apt install build-essential libsdl2-dev libsdl2-ttf-dev gnuplot
+*   Captures live memory access traces from the Linux /proc filesystem
+    
+*   Default PID: 641
+    
+
+### 📊 Visualization
+
+*   **Gnuplot**: Static line plot of memory accesses (time vs. page number)
+    
+*   **SDL2 GUI**:
+    
+    *   Bar graph showing hits, misses, and page fault ratios
+        
+    *   Real-time animation of memory frames:
+        
+        *   ✅ Green: Page hit
+            
+        *   ❌ Red: Page miss
+            
+
+### 📈 Statistics
+
+*   Tracks:
+    
+    *   Hits
+        
+    *   Misses
+        
+    *   Page faults
+        
+    *   Hit ratio
+        
+    *   Miss ratio
+        
+*   Outputs detailed metrics to the console
+    
+
+### 🕹️ Interactive Controls
+
+*   Toggle between graph and animation views
+    
+*   Step through memory accesses or autoplay
+    
+*   Adjust animation speed interactively
+    
+
+### 🧠 Configurable Memory
+
+*   Supports:
+    
+    *   20-bit → 1 MB physical memory
+        
+    *   24-bit → 16 MB physical memory
+        
+*   Page size: 4 KB
+    
+
+📦 Dependencies
+---------------
+
+Install required packages (for Debian/Ubuntu-based systems):
+
+`   sudo apt update  sudo apt install build-essential libsdl2-dev libsdl2-ttf-dev gnuplot   `
+
 🛠️ Compilation
+---------------
+
 Compile the program using:
 
-bash
-Copy
-Edit
-gcc -o vmsim main.c -lSDL2 -lSDL2_ttf
-Replace main.c with your actual source filename if different.
+`   gcc -o vmsim main.c -lSDL2 -lSDL2_ttf   `
+
+Replace main.c with the actual source filename if different.
 
 ▶️ Usage
-bash
-Copy
-Edit
-./vmsim <algorithm> <physical_address_bits>
-Parameters:
+--------
 
-<algorithm>:
+Run the simulator with:
 
-0 – FIFO
+`./vmsim`  
 
-1 – LRU
+### Parameters
 
-2 – MIN
+*   :
+    
+    *   0: FIFO
+        
+    *   1: LRU
+        
+    *   2: MIN
+        
+    *   3: Second Chance
+        
+    *   4: CLOCK
+        
+*   :
+    
+    *   20: 1 MB physical memory
+        
+    *   24: 16 MB physical memory
+        
 
-3 – Second Chance
+### Example
 
-4 – CLOCK
+`   ./vmsim 1 24   `
 
-<physical_address_bits>:
-
-20 – 1 MB physical memory
-
-24 – 16 MB physical memory
-
-Example
-bash
-Copy
-Edit
-./vmsim 1 24
-This runs the simulator using the LRU algorithm with 24-bit physical addressing.
+This runs the simulator with the LRU algorithm and 24-bit physical addressing (16 MB).
 
 📊 Output
-Console output: Statistics on memory accesses
+---------
 
-Gnuplot graph: Static visualization of memory trace over time
+*   **Console Output**: Displays statistics including hits, misses, page faults, hit ratio, and miss ratio
+    
+*   **Gnuplot Graph**: Static plot of memory access traces saved as plot.txt and displayed using Gnuplot
+    
+*   **SDL2 Window**:
+    
+    *   Bar graph of performance metrics (hits, misses, page faults)
+        
+    *   Animation of physical memory frames with a status bar showing step, page, and hit/miss status
+        
 
-SDL2 window: Real-time animation of page table activity
+### Controls in SDL2 Visualization
 
-Controls in SDL2 Visualization
-Space: Step or start autoplay
-
-P: Pause or resume autoplay
-
-+ / -: Adjust animation speed
-
-ESC: Exit visualization
+*   **Space**: Start autoplay or step through memory accesses in manual mode
+    
+*   **P**: Toggle between auto and manual playback
+    
+*   **\+ / -**: Increase or decrease animation speed
+    
+*   **ESC**: Exit the visualization
+    
 
 📝 Notes
-By default, memory trace is collected from /proc/640/maps or /proc/641/maps. Modify the PID in the source to analyze a different process.
+--------
 
-You may need root permissions to access memory maps of certain processes.
+*   The simulator collects memory traces from /proc/641/maps by default. Modify the get\_memory\_access\_trace function in the source code to target a different process ID (PID).
+    
+*   Root permissions may be required to access memory maps of certain processes.
+    
+*   Trace collection is limited to 100 unique pages and a maximum of 1,000,000 entries to prevent overflow.
+    
+*   Ensure the DejaVuSans font (/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf) is available for SDL2 rendering.
+    
 
 🧹 Cleanup
-To remove the compiled output and generated files:
+----------
 
-bash
-Copy
-Edit
-rm vmsim plot.txt
-📄 License
-This project is intended for academic and educational use in studying Operating System concepts, especially paging and page replacement algorithms.
+To remove the compiled binary and generated files:
+
+`   rm vmsim plot.txt   `
+
+🛠️ Troubleshooting
+-------------------
+
+*   **SDL2 Errors**: Ensure libsdl2-dev and libsdl2-ttf-dev are installed and the DejaVuSans font is available.
+    
+*   **Gnuplot Issues**: Verify gnuplot is installed and accessible in your PATH.
+    
+*   **Permission Denied**: Run the program with sudo if you encounter issues accessing /proc//maps.
+    
+*   **No Trace Collected**: Check if the specified PID exists and has readable memory maps.
